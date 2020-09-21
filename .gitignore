@@ -1,0 +1,5 @@
+obj/
+settings/
+*.ewt
+*.out
+Backup of stm32f0.ewp
