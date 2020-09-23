@@ -65,7 +65,8 @@
  *
  */
 /** \brief Enable/disable UART transport layer. */
-#define BOOT_COM_RS232_ENABLE            (1)
+#define BOOT_COM_ENABLE   (1)
+#define BOOT_COM_RS232_ENABLE            (0)
 /** \brief Configure the desired communication speed. */
 #define BOOT_COM_RS232_BAUDRATE          (57600)
 /** \brief Configure number of bytes in the target->host data packet. */
@@ -75,6 +76,47 @@
 /** \brief Select the desired UART peripheral as a zero based index. */
 #define BOOT_COM_RS232_CHANNEL_INDEX     (1)
 
+/** \brief Enable/disable the NET transport layer. */
+#define BOOT_COM_NET_ENABLE               (1)
+/** \brief Configure number of bytes in the target->host data packet. */
+#define BOOT_COM_NET_TX_MAX_DATA          (256)
+/** \brief Configure number of bytes in the host->target data packet. */
+#define BOOT_COM_NET_RX_MAX_DATA          (64)
+/** \brief Configure the port that the TCP/IP server listens on */
+#define BOOT_COM_NET_PORT                 (1000)
+/** \brief Enable/disable DHCP client for automatically obtaining an IP address. */
+#define BOOT_COM_NET_DHCP_ENABLE          (1)
+/** \brief Configure the 1st byte of the IP address */
+#define BOOT_COM_NET_IPADDR0              (192)
+/** \brief Configure the 2nd byte of the IP address */
+#define BOOT_COM_NET_IPADDR1              (168)
+/** \brief Configure the 3rd byte of the IP address */
+#define BOOT_COM_NET_IPADDR2              (178)
+/** \brief Configure the 4th byte of the IP address */
+#define BOOT_COM_NET_IPADDR3              (50)
+/** \brief Configure the 1st byte of the network mask */
+#define BOOT_COM_NET_NETMASK0             (255)
+/** \brief Configure the 2nd byte of the network mask */
+#define BOOT_COM_NET_NETMASK1             (255)
+/** \brief Configure the 3rd byte of the network mask */
+#define BOOT_COM_NET_NETMASK2             (255)
+/** \brief Configure the 4th byte of the network mask */
+#define BOOT_COM_NET_NETMASK3             (0)
+/** \brief Configure the 1st byte of the gateway address */
+#define BOOT_COM_NET_GATEWAY0             (192)
+/** \brief Configure the 2nd byte of the gateway address */
+#define BOOT_COM_NET_GATEWAY1             (168)
+/** \brief Configure the 3rd byte of the gateway address */
+#define BOOT_COM_NET_GATEWAY2             (178)
+/** \brief Configure the 4th byte of the gateway address */
+#define BOOT_COM_NET_GATEWAY3             (1)
+/** \brief Enable/disable the deferred initialization mechanism. When enabled, the
+ *         communication interface is only initialized when: (a) no valid user program
+ *         is detected, or (b) when CpuUserProgramStartHook() returns BLT_FALSE. Your
+ *         bootloader application can explicitly initialize the communication interface
+ *         by calling ComDeferredInit().
+ */
+#define BOOT_COM_NET_DEFERRED_INIT_ENABLE (1)
 
 /****************************************************************************************
 *   B A C K D O O R   E N T R Y   C O N F I G U R A T I O N
@@ -105,7 +147,7 @@
 /** \brief Enable/disable the NVM hook function for supporting additional memory devices. */
 #define BOOT_NVM_HOOKS_ENABLE           (0)
 /** \brief Configure the size of the default memory device (typically flash EEPROM). */
-#define BOOT_NVM_SIZE_KB                (64)
+#define BOOT_NVM_SIZE_KB                (250)
 /** \brief Enable/disable hooks functions to override the user program checksum handling. */
 #define BOOT_NVM_CHECKSUM_HOOKS_ENABLE  (0)
 

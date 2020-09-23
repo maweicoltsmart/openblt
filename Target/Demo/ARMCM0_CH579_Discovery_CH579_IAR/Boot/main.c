@@ -30,20 +30,14 @@
 * Include files
 ****************************************************************************************/
 #include "boot.h"                                /* bootloader generic header          */
-#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
-#include "stm32f0xx_ll_rcc.h"                    /* STM32 LL RCC header                */
-#include "stm32f0xx_ll_bus.h"                    /* STM32 LL BUS header                */
-#include "stm32f0xx_ll_system.h"                 /* STM32 LL SYSTEM header             */
-#include "stm32f0xx_ll_utils.h"                  /* STM32 LL UTILS header              */
-#include "stm32f0xx_ll_usart.h"                  /* STM32 LL USART header              */
-#include "stm32f0xx_ll_gpio.h"                   /* STM32 LL GPIO header               */
+#include "CH57x_common.h"
 
 
 /****************************************************************************************
 * Function prototypes
 ****************************************************************************************/
 static void Init(void);
-static void SystemClock_Config(void);
+//static void SystemClock_Config(void);
 
 
 /************************************************************************************//**
@@ -56,6 +50,7 @@ void main(void)
 {
   /* Initialize the microcontroller. */
   Init();
+  printf("Power on\r\n");
   /* Initialize the bootloader. */
   BootInit();
 
@@ -67,7 +62,6 @@ void main(void)
   }
 } /*** end of main ***/
 
-
 /************************************************************************************//**
 ** \brief     Initializes the microcontroller.
 ** \return    none.
@@ -75,13 +69,29 @@ void main(void)
 ****************************************************************************************/
 static void Init(void)
 {
+  GPIOA_ModeCfg(GPIO_Pin_15, GPIO_ModeOut_PP_20mA);
+  GPIOA_ResetBits(GPIO_Pin_15);// STATUS 拉低, 
+  PWR_UnitModCfg(ENABLE, UNIT_SYS_PLL); /* PLL上电 */
+  DelayMs(3);
+  SetSysClock(CLK_SOURCE_HSE_32MHz); /* 外部晶振 PLL 输出32MHz */
+  HClk32M_Select(Clk32M_HSE);
   /* HAL library initialization */
-  HAL_Init();
+  //HAL_Init();
+  /* 配置串口1：先配置IO口模式，再配置串口 */
+  GPIOA_SetBits(GPIO_Pin_9);
+  GPIOA_ModeCfg(GPIO_Pin_8, GPIO_ModeIN_PU);			// RXD-配置上拉输入
+  GPIOA_ModeCfg(GPIO_Pin_9, GPIO_ModeOut_PP_5mA);		// TXD-配置推挽输出，注意先让IO口输出高电平
+  UART1_DefInit();  // 默认115200，8N1
+
+  UART1_ByteTrigCfg( UART_1BYTE_TRIG );  // 串口字节触发中断配置
+  //UART1_INTCfg( ENABLE, RB_IER_RECV_RDY|RB_IER_LINE_STAT );
+  //NVIC_SetPriority(UART1_IRQn, 3);
+  //NVIC_EnableIRQ( UART1_IRQn );
   /* configure system clock */
-  SystemClock_Config();
+  //SystemClock_Config();
 } /*** end of Init ***/
 
-
+#if 0
 /************************************************************************************//**
 ** \brief     System Clock Configuration. This code was created by CubeMX and configures
 **            the system clock to match the configuration in the bootloader's
@@ -214,6 +224,6 @@ void HAL_MspDeInit(void)
   /* SYSCFG clock disable. */
   LL_APB1_GRP2_DisableClock(LL_APB1_GRP2_PERIPH_SYSCFG);
 } /*** end of HAL_MspDeInit ***/
-
+#endif
 
 /*********************************** end of main.c *************************************/

@@ -31,9 +31,9 @@
 ****************************************************************************************/
 #include "boot.h"                                /* bootloader generic header          */
 #include "led.h"                                 /* LED driver header                  */
-#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
-#include "stm32f0xx_ll_gpio.h"                   /* STM32 LL GPIO header               */
-
+//#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
+//#include "stm32f0xx_ll_gpio.h"                   /* STM32 LL GPIO header               */
+#include "CH57x_common.h"
 
 /****************************************************************************************
 *   B A C K D O O R   E N T R Y   H O O K   F U N C T I O N S
@@ -79,6 +79,8 @@ blt_bool BackDoorEntryHook(void)
 ****************************************************************************************/
 blt_bool CpuUserProgramStartHook(void)
 {
+  printf("goto user program\r\n");
+#if 0
   /* additional and optional backdoor entry through the pushbutton on the board. to
    * force the bootloader to stay active after reset, keep it pressed during reset.
    */
@@ -91,6 +93,7 @@ blt_bool CpuUserProgramStartHook(void)
   }
   /* clean up the LED driver */
   LedBlinkExit();
+#endif
   /*  okay to start the user program.*/
   return BLT_TRUE;
 } /*** end of CpuUserProgramStartHook ***/
@@ -133,6 +136,8 @@ void CopServiceHook(void)
    * a blink interval to be skipped. this function is also called during such operations,
    * so no blink intervals will be skipped when calling the LED blink task here.
    */
+  extern void eth_data_led(void);
+  eth_data_led();
   LedBlinkTask();
 } /*** end of CopServiceHook ***/
 #endif /* BOOT_COP_HOOKS_ENABLE > 0 */

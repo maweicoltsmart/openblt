@@ -30,8 +30,8 @@
 * Include files
 ****************************************************************************************/
 #include "boot.h"                                /* bootloader generic header          */
-#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
-
+//#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
+#include "CH57x_common.h"
 
 /****************************************************************************************
 * Macro definitions
@@ -157,36 +157,36 @@ static const tFlashSector flashLayout[] =
    * sure to update the reserved space for the bootloader here in that case, as well as
    * the start address of the user program in its linker command script.
    */
-  /* { 0x08000000, 0x00800,  0},           flash sector  0 - reserved for bootloader   */
-  /* { 0x08000800, 0x00800,  1},           flash sector  1 - reserved for bootloader   */
-  /* { 0x08001000, 0x00800,  2},           flash sector  2 - reserved for bootloader   */
-  /* { 0x08001800, 0x00800,  3},           flash sector  3 - reserved for bootloader   */
-  /* { 0x08002000, 0x00800,  4},           flash sector  4 - reserved for bootloader   */
-  { 0x08002800, 0x00800,  5},           /* flash sector  5 - 2kb                       */
-  { 0x08003000, 0x00800,  6},           /* flash sector  6 - 2kb                       */
-  { 0x08003800, 0x00800,  7},           /* flash sector  7 - 2kb                       */
-#if (BOOT_NVM_SIZE_KB > 16)
-  { 0x08004000, 0x00800,  8},           /* flash sector  8 - 2kb                       */
-  { 0x08004800, 0x00800,  9},           /* flash sector  9 - 2kb                       */
-  { 0x08005000, 0x00800, 10},           /* flash sector 10 - 2kb                       */
-  { 0x08005800, 0x00800, 11},           /* flash sector 11 - 2kb                       */
-  { 0x08006000, 0x00800, 12},           /* flash sector 12 - 2kb                       */
-  { 0x08006800, 0x00800, 13},           /* flash sector 13 - 2kb                       */
-  { 0x08007000, 0x00800, 14},           /* flash sector 14 - 2kb                       */
-  { 0x08007800, 0x00800, 15},           /* flash sector 15 - 2kb                       */
+  /* { 0x00000000, 0x00800,  0},           flash sector  0 - reserved for bootloader   */
+  /* { 0x00000800, 0x00800,  1},           flash sector  1 - reserved for bootloader   */
+  /* { 0x00001000, 0x00800,  2},           flash sector  2 - reserved for bootloader   */
+  /* { 0x00001800, 0x00800,  3},           flash sector  3 - reserved for bootloader   */
+  /* { 0x00002000, 0x00800,  4},           flash sector  4 - reserved for bootloader   */
+  /* { 0x00002800, 0x00800,  5},           flash sector  5 - 2kb                       */
+  /* { 0x00003000, 0x00800,  6},           flash sector  6 - 2kb                       */
+  /* { 0x00003800, 0x00800,  7},           flash sector  7 - 2kb                       */
+  /* { 0x00004000, 0x00800,  8},           flash sector  8 - 2kb                       */
+  /* { 0x00004800, 0x00800,  9},           flash sector  9 - 2kb                       */
+ #if (BOOT_NVM_SIZE_KB > 16)
+  { 0x00005000, 0x00800, 10},           /* flash sector 10 - 2kb                       */
+  { 0x00005800, 0x00800, 11},           /* flash sector 11 - 2kb                       */
+  { 0x00006000, 0x00800, 12},           /* flash sector 12 - 2kb                       */
+  { 0x00006800, 0x00800, 13},           /* flash sector 13 - 2kb                       */
+  { 0x00007000, 0x00800, 14},           /* flash sector 14 - 2kb                       */
+  { 0x00007800, 0x00800, 15},           /* flash sector 15 - 2kb                       */
 #endif
 #if (BOOT_NVM_SIZE_KB > 32)
-  { 0x08008000, 0x08000, 16},           /* flash sector 16 - 32kb                       */
+  { 0x00008000, 0x08000, 16},           /* flash sector 16 - 32kb                       */
 #endif
 #if (BOOT_NVM_SIZE_KB > 64)
-  { 0x08010000, 0x08000, 17},           /* flash sector 17 - 32kb                       */
-  { 0x08018000, 0x08000, 18},           /* flash sector 18 - 32kb                       */
+  { 0x00010000, 0x08000, 17},           /* flash sector 17 - 32kb                       */
+  { 0x00018000, 0x08000, 18},           /* flash sector 18 - 32kb                       */
 #endif
 #if (BOOT_NVM_SIZE_KB > 128)
-  { 0x08020000, 0x08000, 19},           /* flash sector 19 - 32kb                       */
-  { 0x08028000, 0x08000, 20},           /* flash sector 20 - 32kb                       */
-  { 0x08030000, 0x08000, 21},           /* flash sector 21 - 32kb                       */
-  { 0x08038000, 0x08000, 22},           /* flash sector 22 - 32kb                       */
+  { 0x00020000, 0x08000, 19},           /* flash sector 19 - 32kb                       */
+  { 0x00028000, 0x08000, 20},           /* flash sector 20 - 32kb                       */
+  { 0x00030000, 0x08000, 21},           /* flash sector 21 - 32kb                       */
+  { 0x00038000, 0x08000, 22},           /* flash sector 22 - 32kb                       */
 #endif
 #if (BOOT_NVM_SIZE_KB > 256)
 #error "BOOT_NVM_SIZE_KB > 256 is currently not supported."
@@ -665,7 +665,7 @@ static blt_bool FlashWriteBlock(tFlashBlockInfo *block)
 #endif
 
   /* unlock the flash peripheral to enable the flash control register access. */
-  HAL_FLASH_Unlock();
+  //HAL_FLASH_Unlock();
   /* program all words in the block one by one */
   for (word_cnt=0; word_cnt<(FLASH_WRITE_BLOCK_SIZE/sizeof(blt_int32u)); word_cnt++)
   {
@@ -674,7 +674,7 @@ static blt_bool FlashWriteBlock(tFlashBlockInfo *block)
     /* keep the watchdog happy */
     CopService();
     /* program the word */
-    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, prog_addr, prog_data) != HAL_OK)
+    if (CodeFlash_WriteDW(prog_addr, prog_data) != SUCCESS)
     {
       result = BLT_FALSE;
       break;
@@ -687,7 +687,7 @@ static blt_bool FlashWriteBlock(tFlashBlockInfo *block)
     }
   }
   /* lock the flash peripheral to disable the flash control register access. */
-  HAL_FLASH_Lock();
+  //HAL_FLASH_Lock();
   /* give the result back to the caller */
   return result;
 } /*** end of FlashWriteBlock ***/
@@ -707,8 +707,8 @@ static blt_bool FlashEraseSectors(blt_int8u first_sector, blt_int8u last_sector)
   blt_int16u block_cnt;
   blt_addr   start_addr;
   blt_addr   end_addr;
-  blt_int32u pageError = 0;
-  FLASH_EraseInitTypeDef eraseInitStruct;
+  //blt_int32u pageError = 0;
+  //FLASH_EraseInitTypeDef eraseInitStruct;
 
   /* validate the sector numbers */
   if (first_sector > last_sector)
@@ -728,28 +728,28 @@ static blt_bool FlashEraseSectors(blt_int8u first_sector, blt_int8u last_sector)
     end_addr = FlashGetSectorBaseAddr(last_sector) + FlashGetSectorSize(last_sector) - 1;
     nr_of_blocks = (end_addr - start_addr + 1) / FLASH_ERASE_BLOCK_SIZE;
     /* prepare the erase initialization structure. */
-    eraseInitStruct.TypeErase   = FLASH_TYPEERASE_PAGES;
-    eraseInitStruct.PageAddress = start_addr;
-    eraseInitStruct.NbPages     = 1;
+    //eraseInitStruct.TypeErase   = FLASH_TYPEERASE_PAGES;
+    //eraseInitStruct.PageAddress = start_addr;
+    //eraseInitStruct.NbPages     = 1;
     /* unlock the flash array */
-    HAL_FLASH_Unlock();
+    //HAL_FLASH_Unlock();
     /* erase all blocks one by one */
     for (block_cnt=0; block_cnt<nr_of_blocks; block_cnt++)
     {
       /* keep the watchdog happy */
       CopService();
       /* erase block */
-      if (HAL_FLASHEx_Erase(&eraseInitStruct, (uint32_t *)&pageError) != HAL_OK)
+      if (CodeFlash_BlockErase(start_addr) != SUCCESS)
       {
         /* could not perform erase operation. update result and stop loop. */
         result = BLT_FALSE;
         break;
       }
       /* update the page base address for the next sector. */
-      eraseInitStruct.PageAddress += FLASH_ERASE_BLOCK_SIZE;
+      start_addr += FLASH_ERASE_BLOCK_SIZE;
     }
     /* lock the flash array again */
-    HAL_FLASH_Lock();
+    //HAL_FLASH_Lock();
   }
   /* give the result back to the caller */
   return result;

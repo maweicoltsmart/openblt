@@ -30,8 +30,9 @@
 * Include files
 ****************************************************************************************/
 #include "boot.h"                                /* bootloader generic header          */
-#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
-
+//#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
+#include "CH57x_common.h"
+#include "core_cm0.h"
 
 /****************************************************************************************
 * Local data declarations

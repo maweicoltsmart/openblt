@@ -30,9 +30,9 @@
 * Include files
 ****************************************************************************************/
 #include "boot.h"                                /* bootloader generic header          */
-#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
-#include "stm32f0xx_ll_bus.h"                    /* STM32 LL BUS header                */
-#include "stm32f0xx_ll_system.h"                 /* STM32 LL SYSTEM header             */
+//#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
+//#include "stm32f0xx_ll_bus.h"                    /* STM32 LL BUS header                */
+//#include "stm32f0xx_ll_system.h"                 /* STM32 LL SYSTEM header             */
 
 
 /****************************************************************************************
@@ -57,6 +57,10 @@
 extern blt_bool CpuUserProgramStartHook(void);
 #endif
 
+
+void HAL_DeInit(void)
+{
+}
 
 /************************************************************************************//**
 ** \brief     Initializes the CPU module.
@@ -121,6 +125,7 @@ void CpuStartUserProgram(void)
   HAL_DeInit();
   /* reset the timer */
   TimerReset();
+#if 0
   /* enable system configuration peripheral, which is needed to remap the RAM later on */
   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_SYSCFG);
   /* copy user program vector's to RAM */
@@ -134,6 +139,7 @@ void CpuStartUserProgram(void)
    * the 2nd entry in the user program's vector table. this address points to the
    * user program's reset handler.
    */
+#endif
   pProgResetHandler = (void(*)(void))(*((blt_addr *)CPU_USER_PROGRAM_STARTADDR_PTR));
   /* The Cortex-M0 core has interrupts enabled out of reset. the bootloader
    * explicitly disables these for security reasons. Enable them here again, so it does 
