@@ -86,37 +86,26 @@ __vector_table
         DCD     SysTick_Handler                ; SysTick Handler
 
         ; External Interrupts
-        DCD     WWDG_IRQHandler                ; Window Watchdog
-        DCD     PVD_IRQHandler                 ; PVD through EXTI Line detect
-        DCD     RTC_IRQHandler                 ; RTC through EXTI Line
-        DCD     FLASH_IRQHandler               ; FLASH
-        DCD     RCC_CRS_IRQHandler             ; RCC and CRS
-        DCD     EXTI0_1_IRQHandler             ; EXTI Line 0 and 1
-        DCD     EXTI2_3_IRQHandler             ; EXTI Line 2 and 3
-        DCD     EXTI4_15_IRQHandler            ; EXTI Line 4 to 15
-        DCD     TSC_IRQHandler                 ; TSC
-        DCD     DMA1_Channel1_IRQHandler       ; DMA1 Channel 1
-        DCD     DMA1_Channel2_3_IRQHandler     ; DMA1 Channel 2 and Channel 3
-        DCD     DMA1_Channel4_5_IRQHandler     ; DMA1 Channel 4 and Channel 5
-        DCD     ADC1_COMP_IRQHandler           ; ADC1, COMP1 and COMP2 
-        DCD     TIM1_BRK_UP_TRG_COM_IRQHandler ; TIM1 Break, Update, Trigger and Commutation
-        DCD     TIM1_CC_IRQHandler             ; TIM1 Capture Compare
-        DCD     TIM2_IRQHandler                ; TIM2
-        DCD     TIM3_IRQHandler                ; TIM3
-        DCD     TIM6_DAC_IRQHandler            ; TIM6 and DAC
-        DCD     0                              ; Reserved
-        DCD     TIM14_IRQHandler               ; TIM14
-        DCD     TIM15_IRQHandler               ; TIM15
-        DCD     TIM16_IRQHandler               ; TIM16
-        DCD     TIM17_IRQHandler               ; TIM17
-        DCD     I2C1_IRQHandler                ; I2C1
-        DCD     I2C2_IRQHandler                ; I2C2
-        DCD     SPI1_IRQHandler                ; SPI1
-        DCD     SPI2_IRQHandler                ; SPI2
-        DCD     USART1_IRQHandler              ; USART1
-        DCD     USART2_IRQHandler              ; USART2
-        DCD     0                              ; Reserved
-        DCD     CEC_CAN_IRQHandler             ; CEC and CAN
+        DCD     TMR0_IRQHandler           ;  0:  TMR0
+        DCD     GPIO_IRQHandler           ;  1:  GPIO
+        DCD     SLAVE_IRQHandler          ;  2:  SLAVE
+        DCD     SPI0_IRQHandler           ;  3:  SPI0
+        DCD     BB_IRQHandler             ;  4:  BB
+        DCD     LLE_IRQHandler            ;  5:  LLE
+        DCD     USB_IRQHandler            ;  6:  USB
+        DCD     ETH_IRQHandler            ;  7:  ETH
+        DCD     TMR1_IRQHandler           ;  8:  TMR1
+        DCD     TMR2_IRQHandler           ;  9:  TMR2
+        DCD     UART0_IRQHandler          ; 10:  UART0
+        DCD     UART1_IRQHandler          ; 11:  UART1
+        DCD     RTC_IRQHandler            ; 12:  RTC
+        DCD     ADC_IRQHandler            ; 13:  ADC
+        DCD     SPI1_IRQHandler           ; 14:  SPI1
+        DCD     LED_IRQHandler            ; 15:  LED
+        DCD     TMR3_IRQHandler           ; 16:  TMR3 
+        DCD     UART2_IRQHandler          ; 17:  UART2
+        DCD     UART3_IRQHandler          ; 18:  UART3
+        DCD     WDT_IRQHandler            ; 19:  WDT
         
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -156,151 +145,107 @@ PendSV_Handler
         SECTION .text:CODE:NOROOT:REORDER(1)
 SysTick_Handler
         B SysTick_Handler
-
-        PUBWEAK WWDG_IRQHandler
+        
+        
+        PUBWEAK TMR0_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
-WWDG_IRQHandler
-        B WWDG_IRQHandler
+TMR0_IRQHandler
+        B TMR0_IRQHandler
 
-        PUBWEAK PVD_IRQHandler
+        PUBWEAK GPIO_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
-PVD_IRQHandler
-        B PVD_IRQHandler
+GPIO_IRQHandler
+        B GPIO_IRQHandler
+
+        PUBWEAK SLAVE_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+SLAVE_IRQHandler
+        B SLAVE_IRQHandler
+
+        PUBWEAK SPI0_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+SPI0_IRQHandler
+        B SPI0_IRQHandler
+
+        PUBWEAK BB_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+BB_IRQHandler
+        B BB_IRQHandler
+
+        PUBWEAK LLE_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+LLE_IRQHandler
+        B LLE_IRQHandler
+
+        PUBWEAK USB_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+USB_IRQHandler
+        B USB_IRQHandler
+
+        PUBWEAK ETH_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+ETH_IRQHandler
+        B ETH_IRQHandler
+
+        PUBWEAK TMR1_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+TMR1_IRQHandler
+        B TMR1_IRQHandler
+
+        PUBWEAK TMR2_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+TMR2_IRQHandler
+        B TMR2_IRQHandler
+
+        PUBWEAK UART0_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+UART0_IRQHandler
+        B UART0_IRQHandler
+
+        PUBWEAK UART1_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+UART1_IRQHandler
+        B UART1_IRQHandler
 
         PUBWEAK RTC_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
 RTC_IRQHandler
         B RTC_IRQHandler
 
-        PUBWEAK FLASH_IRQHandler
+        PUBWEAK ADC_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
-FLASH_IRQHandler
-        B FLASH_IRQHandler
-
-        PUBWEAK RCC_CRS_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-RCC_CRS_IRQHandler
-        B RCC_CRS_IRQHandler
-
-        PUBWEAK EXTI0_1_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-EXTI0_1_IRQHandler
-        B EXTI0_1_IRQHandler
-
-        PUBWEAK EXTI2_3_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-EXTI2_3_IRQHandler
-        B EXTI2_3_IRQHandler
-
-        PUBWEAK EXTI4_15_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-EXTI4_15_IRQHandler
-        B EXTI4_15_IRQHandler
-
-        PUBWEAK TSC_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-TSC_IRQHandler
-        B TSC_IRQHandler
-
-        PUBWEAK DMA1_Channel1_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-DMA1_Channel1_IRQHandler
-        B DMA1_Channel1_IRQHandler
-
-        PUBWEAK DMA1_Channel2_3_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-DMA1_Channel2_3_IRQHandler
-        B DMA1_Channel2_3_IRQHandler
-
-        PUBWEAK DMA1_Channel4_5_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-DMA1_Channel4_5_IRQHandler
-        B DMA1_Channel4_5_IRQHandler
-
-        PUBWEAK ADC1_COMP_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-ADC1_COMP_IRQHandler
-        B ADC1_COMP_IRQHandler
-
-        PUBWEAK TIM1_BRK_UP_TRG_COM_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-TIM1_BRK_UP_TRG_COM_IRQHandler
-        B TIM1_BRK_UP_TRG_COM_IRQHandler
-
-        PUBWEAK TIM1_CC_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-TIM1_CC_IRQHandler
-        B TIM1_CC_IRQHandler
-
-        PUBWEAK TIM2_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-TIM2_IRQHandler
-        B TIM2_IRQHandler
-
-        PUBWEAK TIM3_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-TIM3_IRQHandler
-        B TIM3_IRQHandler
-
-        PUBWEAK TIM6_DAC_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-TIM6_DAC_IRQHandler
-        B TIM6_DAC_IRQHandler
-
-        PUBWEAK TIM14_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-TIM14_IRQHandler
-        B TIM14_IRQHandler
-
-        PUBWEAK TIM15_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-TIM15_IRQHandler
-        B TIM15_IRQHandler
-
-        PUBWEAK TIM16_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-TIM16_IRQHandler
-        B TIM16_IRQHandler
-
-        PUBWEAK TIM17_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-TIM17_IRQHandler
-        B TIM17_IRQHandler
-
-        PUBWEAK I2C1_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-I2C1_IRQHandler
-        B I2C1_IRQHandler
-
-        PUBWEAK I2C2_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-I2C2_IRQHandler
-        B I2C2_IRQHandler
+ADC_IRQHandler
+        B ADC_IRQHandler
 
         PUBWEAK SPI1_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
 SPI1_IRQHandler
         B SPI1_IRQHandler
 
-        PUBWEAK SPI2_IRQHandler
+        PUBWEAK LED_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
-SPI2_IRQHandler
-        B SPI2_IRQHandler
+LED_IRQHandler
+        B LED_IRQHandler
 
-        PUBWEAK USART1_IRQHandler
+        PUBWEAK TMR3_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
-USART1_IRQHandler
-        B USART1_IRQHandler
+TMR3_IRQHandler
+        B TMR3_IRQHandler
 
-        PUBWEAK USART2_IRQHandler
+        PUBWEAK UART2_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
-USART2_IRQHandler
-        B USART2_IRQHandler
+UART2_IRQHandler
+        B UART2_IRQHandler
 
-        PUBWEAK CEC_CAN_IRQHandler
+        PUBWEAK UART3_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
-CEC_CAN_IRQHandler
-        B CEC_CAN_IRQHandler
-        
+UART3_IRQHandler
+        B UART3_IRQHandler
+
+        PUBWEAK WDT_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1)
+WDT_IRQHandler
+        B WDT_IRQHandler                  
+
         END
 ;************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE*****

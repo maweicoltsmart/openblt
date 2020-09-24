@@ -1106,6 +1106,9 @@
                     <configuration>stm32f0</configuration>
                 </excluded>
             </file>
+            <file>
+                <name>$PROJ_DIR$\..\lib\StdPeriphDriver\stm32f0xx_it.c</name>
+            </file>
         </group>
         <group>
             <name>CMSIS</name>
