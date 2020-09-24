@@ -165,9 +165,9 @@ static const tFlashSector flashLayout[] =
   /* { 0x00002800, 0x00800,  5},           flash sector  5 - 2kb                       */
   /* { 0x00003000, 0x00800,  6},           flash sector  6 - 2kb                       */
   /* { 0x00003800, 0x00800,  7},           flash sector  7 - 2kb                       */
-  /* { 0x00004000, 0x00800,  8},           flash sector  8 - 2kb                       */
-  /* { 0x00004800, 0x00800,  9},           flash sector  9 - 2kb                       */
  #if (BOOT_NVM_SIZE_KB > 16)
+  { 0x00004000, 0x00800,  8},           /* flash sector  8 - 2kb                       */
+  { 0x00004800, 0x00800,  9},           /* flash sector  9 - 2kb                       */
   { 0x00005000, 0x00800, 10},           /* flash sector 10 - 2kb                       */
   { 0x00005800, 0x00800, 11},           /* flash sector 11 - 2kb                       */
   { 0x00006000, 0x00800, 12},           /* flash sector 12 - 2kb                       */
