@@ -145,12 +145,17 @@ PendSV_Handler
         SECTION .text:CODE:NOROOT:REORDER(1)
 SysTick_Handler
         B SysTick_Handler
-        
+        //LDR r0, =0x403c
+        //LDR r1, [r0]
+        //mov pc, r1
         
         PUBWEAK TMR0_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
 TMR0_IRQHandler
         B TMR0_IRQHandler
+        //LDR r0, =0x4040
+        //LDR r1, [r0]
+        //mov pc, r1
 
         PUBWEAK GPIO_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
@@ -186,6 +191,9 @@ USB_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
 ETH_IRQHandler
         B ETH_IRQHandler
+        //LDR r0, =0x405c
+        //LDR r1, [r0]
+        //mov pc, r1
 
         PUBWEAK TMR1_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
@@ -206,6 +214,9 @@ UART0_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
 UART1_IRQHandler
         B UART1_IRQHandler
+        //LDR r0, =0x406c
+        //LDR r1, [r0]
+        //mov pc, r1
 
         PUBWEAK RTC_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
