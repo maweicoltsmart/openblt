@@ -33,6 +33,7 @@
 //#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
 #include "CH57x_common.h"
 #include "core_cm0.h"
+#include "vector.h"
 
 /****************************************************************************************
 * Local data declarations
@@ -137,8 +138,9 @@ uint32_t HAL_GetTick(void)
 ** \return    none.
 **
 ****************************************************************************************/
-void SysTick_Handler(void) @".systickvec"
+void SysTick_Handler(void)
 {
+  GOTO_APP(APP_VECTOR_SYSTICK_ADDR);
   /* Nothing to do here. */
 } /*** end of SysTick_Handler ***/
 

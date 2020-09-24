@@ -23,6 +23,7 @@
 #include <string.h>
 #include "CH57x_common.h"
 #include "core_cm0.h"
+#include "vector.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -88,72 +89,89 @@ void NMI_Handler(void)
 {
 
 }*/
-void ETH_IRQHandler(void) @".ethvec"
+void ETH_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_ETH_ADDR);
 }
 
-void GPIO_IRQHandler(void) @".gpiovec"
+void GPIO_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_GPIO_ADDR);
 }
 
-void SLAVE_IRQHandler(void) @".slavevec"
+void SLAVE_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_SLAVE_ADDR);
 }
 
-void SPI0_IRQHandler(void) @".spi0vec"
+void SPI0_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_SPI0_ADDR);
 }
 
-void BB_IRQHandler(void) @".blebvec"
+void BB_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_BLEB_ADDR);
 }
 
-void LLE_IRQHandler(void) @".blelvec"
+void LLE_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_BLEL_ADDR);
 }
 
-void USB_IRQHandler(void) @".usbvec"
+void USB_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_USB_ADDR);
 }
 
-void TMR1_IRQHandler(void) @".timer1vec"
+void TMR1_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_TIMER1_ADDR);
 }
 
-void TMR2_IRQHandler(void) @".timer2vec"
+void TMR2_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_TIMER2_ADDR);
 }
 
-void RTC_IRQHandler(void) @".rtcvec"
+void RTC_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_RTC_ADDR);
 }
 
-void ADC_IRQHandler(void) @".adcvec"
+void ADC_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_ADC_ADDR);
 }
 
-void SPI1_IRQHandler(void) @".spi1vec"
+void SPI1_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_SPI1_ADDR);
 }
 
-void LED_IRQHandler(void) @".ledvec"
+void LED_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_LED_ADDR);
 }
 
-void TMR3_IRQHandler(void) @".timer3vec"
+void TMR3_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_TIMER3_ADDR);
 }
 
-void UART2_IRQHandler(void) @".uart2vec"
+void UART2_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_UART2_ADDR);
 }
 
-void UART3_IRQHandler(void) @".uart3vec"
+void UART3_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_UART3_ADDR);
 }
 
-void WDT_IRQHandler(void) @".wwdogvec"
+void WDT_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_WWDOG_BAT_ADDR);
 }
 
 /*******************************************************************************
@@ -163,8 +181,9 @@ void WDT_IRQHandler(void) @".wwdogvec"
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void TMR0_IRQHandler(void) @".timer0vec" /* 定时器0中断 */
+void TMR0_IRQHandler(void) /* 定时器0中断 */
 {
+  GOTO_APP(APP_VECTOR_TIMER0_ADDR);
 }
 /*******************************************************************************
 * Function Name  : UART0_IRQHandler
@@ -173,8 +192,9 @@ void TMR0_IRQHandler(void) @".timer0vec" /* 定时器0中断 */
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void UART0_IRQHandler(void) @".uart0vec"
+void UART0_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_UART0_ADDR);
 }
 /*******************************************************************************
 * Function Name  : UART1_IRQHandler
@@ -183,8 +203,9 @@ void UART0_IRQHandler(void) @".uart0vec"
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void UART1_IRQHandler(void) @".uart1vec"
+void UART1_IRQHandler(void)
 {
+  GOTO_APP(APP_VECTOR_UART1_ADDR);
 }
 /******************************************************************************/
 /* STM32F0xx Peripheral Interrupt Handlers                                    */

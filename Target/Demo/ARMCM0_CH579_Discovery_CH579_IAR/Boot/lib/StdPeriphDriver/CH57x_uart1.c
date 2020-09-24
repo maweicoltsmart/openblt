@@ -136,7 +136,7 @@ void UART1_SendString( PUINT8 buf, UINT16 l )
 * Return         : ch
 *******************************************************************************/
 //重定向c库函数printf到USART1
-int fputc(int ch, FILE *f)
+int fputc(int ch ,FILE* f)
 {
     //return (ch);
     R8_UART1_THR = (uint8_t) ch;
