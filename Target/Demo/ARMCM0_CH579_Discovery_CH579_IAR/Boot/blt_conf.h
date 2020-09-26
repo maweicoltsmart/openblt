@@ -130,7 +130,7 @@
  * also be implemented in a way that disables the backdoor entry altogether.
  */
 /** \brief Enable/disable the backdoor override hook functions. */
-#define BOOT_BACKDOOR_HOOKS_ENABLE      (0)
+#define BOOT_BACKDOOR_HOOKS_ENABLE      (1)
 
 
 /****************************************************************************************
@@ -147,7 +147,7 @@
 /** \brief Enable/disable the NVM hook function for supporting additional memory devices. */
 #define BOOT_NVM_HOOKS_ENABLE           (0)
 /** \brief Configure the size of the default memory device (typically flash EEPROM). */
-#define BOOT_NVM_SIZE_KB                (250)
+#define BOOT_NVM_SIZE_KB                (250 - 16)
 /** \brief Enable/disable hooks functions to override the user program checksum handling. */
 #define BOOT_NVM_CHECKSUM_HOOKS_ENABLE  (0)
 

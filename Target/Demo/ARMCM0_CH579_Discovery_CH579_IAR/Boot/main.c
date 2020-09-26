@@ -32,6 +32,7 @@
 #include "boot.h"                                /* bootloader generic header          */
 #include "CH57x_common.h"
 #include "vector.h"
+#include "stdio.h"
 
 /****************************************************************************************
 * Function prototypes
@@ -51,10 +52,10 @@ void main(void)
   /* Initialize the microcontroller. */
   Init();
   printf("Boot Power on\r\n");
-  __set_PSP(*(volatile unsigned int*) APP_VECTOR_TABLE_START_ADDR);
+  /*__set_PSP(*(volatile unsigned int*) APP_VECTOR_TABLE_START_ADDR);
   __set_CONTROL(0);
   __set_MSP(*(volatile unsigned int*) APP_VECTOR_TABLE_START_ADDR);
-  GOTO_APP(APP_VECTOR_RESET_ADDR);
+  GOTO_APP(APP_VECTOR_RESET_ADDR);*/
   /* Initialize the bootloader. */
   BootInit();
 

@@ -43,13 +43,13 @@
 /** \brief Standard size of a flash block for writing. */
 #define FLASH_WRITE_BLOCK_SIZE          (512)
 /** \brief Total numbers of sectors in array flashLayout[]. */
-#define FLASH_TOTAL_SECTORS             (sizeof(flashLayout)/sizeof(flashLayout[0]))
+#define FLASH_TOTAL_SECTORS             15//(sizeof(flashLayout)/sizeof(flashLayout[0]))
 /** \brief End address of the bootloader programmable flash. */
 #define FLASH_END_ADDRESS               (flashLayout[FLASH_TOTAL_SECTORS-1].sector_start + \
                                          flashLayout[FLASH_TOTAL_SECTORS-1].sector_size - 1)
 #if (BOOT_NVM_SIZE_KB > 64)
 /** \brief Number of bytes to erase per erase operation. */
-#define FLASH_ERASE_BLOCK_SIZE          (0x800)
+#define FLASH_ERASE_BLOCK_SIZE          (0x200)
 #else
 /** \brief Number of bytes to erase per erase operation. */
 #define FLASH_ERASE_BLOCK_SIZE          (0x400)

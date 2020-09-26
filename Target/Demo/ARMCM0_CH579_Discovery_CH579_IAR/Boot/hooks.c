@@ -34,6 +34,7 @@
 //#include "stm32f0xx.h"                           /* STM32 CPU and HAL header           */
 //#include "stm32f0xx_ll_gpio.h"                   /* STM32 LL GPIO header               */
 #include "CH57x_common.h"
+#include <stdio.h>
 
 /****************************************************************************************
 *   B A C K D O O R   E N T R Y   H O O K   F U N C T I O N S
@@ -47,6 +48,8 @@
 ****************************************************************************************/
 void BackDoorInitHook(void)
 {
+  GPIOB_ModeCfg(GPIO_Pin_22, GPIO_ModeIN_PU);
+  
 } /*** end of BackDoorInitHook ***/
 
 
@@ -58,7 +61,14 @@ void BackDoorInitHook(void)
 blt_bool BackDoorEntryHook(void)
 {
   /* default implementation always activates the bootloader after a reset */
-  return BLT_TRUE;
+  if(GPIOB_ReadPortPin(GPIO_Pin_22) == 0)
+  {
+    return BLT_TRUE;
+  }
+  else
+  {
+    return BLT_FALSE;
+  }
 } /*** end of BackDoorEntryHook ***/
 #endif /* BOOT_BACKDOOR_HOOKS_ENABLE > 0 */
 
@@ -80,11 +90,11 @@ blt_bool BackDoorEntryHook(void)
 blt_bool CpuUserProgramStartHook(void)
 {
   printf("goto user program\r\n");
-#if 0
+
   /* additional and optional backdoor entry through the pushbutton on the board. to
    * force the bootloader to stay active after reset, keep it pressed during reset.
    */
-  if (LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_0) != 0)
+  if(GPIOB_ReadPortPin(GPIO_Pin_22) != 0)
   {
     /* pushbutton pressed, so do not start the user program and keep the
      * bootloader active instead.
@@ -93,7 +103,7 @@ blt_bool CpuUserProgramStartHook(void)
   }
   /* clean up the LED driver */
   LedBlinkExit();
-#endif
+
   /*  okay to start the user program.*/
   return BLT_TRUE;
 } /*** end of CpuUserProgramStartHook ***/
@@ -118,6 +128,7 @@ void CopInitHook(void)
    * the LED driver. It is kind of a visual watchdog anyways.
    */
   LedBlinkInit(100);
+  WWDG_ResetCfg(ENABLE);
 } /*** end of CopInitHook ***/
 
 
@@ -136,6 +147,7 @@ void CopServiceHook(void)
    * a blink interval to be skipped. this function is also called during such operations,
    * so no blink intervals will be skipped when calling the LED blink task here.
    */
+  WWDG_SetCounter(1);
   extern void eth_data_led(void);
   eth_data_led();
   LedBlinkTask();
