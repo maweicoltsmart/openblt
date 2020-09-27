@@ -89,28 +89,28 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONF_MAX_CONNECTIONS 1
+#define UIP_CONF_MAX_CONNECTIONS 5
 
 /**
  * Maximum number of listening TCP ports.
  *
  * \hideinitializer
  */
-#define UIP_CONF_MAX_LISTENPORTS 1
+#define UIP_CONF_MAX_LISTENPORTS 5
 
 /**
  * UDP support on or off
  *
  * \hideinitializer
  */
-#define UIP_CONF_UDP             1
+#define UIP_CONF_UDP             5
 
 /**
  * UDP Maximum Connections
  *
  * \hideinitializer
  */
-#define UIP_CONF_UDP_CONNS       1
+#define UIP_CONF_UDP_CONNS       5
 
 /**
  * UDP checksums on or off
@@ -154,6 +154,8 @@ typedef unsigned short uip_stats_t;
 #include "boot.h"
 #include "net.h"
 #include "dhcpc.h"
+#include "resolv.h"
+#include "net.h"
 
 #endif /* __UIP_CONF_H__ */
 

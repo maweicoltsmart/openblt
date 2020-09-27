@@ -32,9 +32,10 @@
 /****************************************************************************************
 * Macro definitions
 ****************************************************************************************/
-#ifndef UIP_APPCALL
-#define UIP_APPCALL NetApp
-#endif /* UIP_APPCALL */
+void uip_appcall(void);
+void uip_udp_appcall(void);
+#define UIP_APPCALL                     uip_appcall
+#define UIP_UDP_APPCALL                 uip_udp_appcall
 
 
 /****************************************************************************************
@@ -62,9 +63,9 @@ void     NetInit(void);
 void     NetDeferredInit(void);
 #endif
 void     NetApp(void);
-void     NetTransmitPacket(blt_int8u *data, blt_int8u len);
-blt_bool NetReceivePacket(blt_int8u *data, blt_int8u *len);
-
+//void     NetTransmitPacket(blt_int8u *data, blt_int8u len);
+//blt_bool NetReceivePacket(blt_int8u *data, blt_int8u *len);
+blt_int32u TimerGetElapsedTime( blt_int32u savedTime );
 #else /* BOOT_COM_NET_ENABLE > 0 */
 
 typedef struct net_state

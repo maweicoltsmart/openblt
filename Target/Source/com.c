@@ -136,7 +136,8 @@ void ComTask(void)
     /* make this the active interface */
     comActiveInterface = COM_IF_NET;
     /* process packet */
-    XcpPacketReceived(&xcpCtoReqPacket[0], xcpPacketLen);
+    //XcpPacketReceived(&xcpCtoReqPacket[0], xcpPacketLen);
+    NetApp();
   }
 #endif
 } /*** end of ComTask ***/

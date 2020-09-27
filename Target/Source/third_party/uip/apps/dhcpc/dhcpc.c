@@ -96,6 +96,7 @@ struct dhcp_msg
 static const u8_t xid[4] = {0xad, 0xde, 0x12, 0x23};
 static const u8_t magic_cookie[4] = {99, 130, 83, 99};
 
+static u8_t has_got_ip = 0;
 static void dhcpc_configured(const struct dhcpc_state *s);
 static void dhcpc_unconfigured(void);
 
@@ -437,12 +438,23 @@ dhcpc_configured(const struct dhcpc_state *s)
   uip_setnetmask(&s->netmask);
   /* set the gateway address received from the DHCP server. */
   uip_setdraddr(&s->default_router);
+  printf("Got IP Address: %d.%d.%d.%d\r\n",
+  htons(s->ipaddr[0]) >> 8,
+  htons(s->ipaddr[0]) & 0xff,
+  htons(s->ipaddr[1]) >> 8,
+  htons(s->ipaddr[1]) & 0xff);
+  has_got_ip = 1;
 }
 /*---------------------------------------------------------------------------*/
 void
 dhcpc_unconfigured(void)
 {
   /* nothing needs to be done here. */
+}
+
+u8_t if_have_ip(void)
+{
+  return has_got_ip;
 }
 /*---------------------------------------------------------------------------*/
 

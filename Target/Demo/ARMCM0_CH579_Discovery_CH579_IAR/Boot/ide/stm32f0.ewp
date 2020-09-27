@@ -283,7 +283,7 @@
                 <option>
                     <name>CCAllowList</name>
                     <version>1</version>
-                    <state>11111110</state>
+                    <state>00000000</state>
                 </option>
                 <option>
                     <name>CCDebugInfo</name>
@@ -350,6 +350,7 @@
                     <state>$PROJ_DIR$\..\lib\StdPeriphDriver\Inc</state>
                     <state>$PROJ_DIR$\..\..\..\..\Source\third_party\uip\uip</state>
                     <state>$PROJ_DIR$\..\..\..\..\Source\third_party\uip\apps\dhcpc</state>
+                    <state>$PROJ_DIR$\..\..\..\..\Source\third_party\uip\apps\resolv</state>
                     <state>$PROJ_DIR$\..\lib\uip</state>
                     <state>$PROJ_DIR$\..\lib\CMSIS\Device\ST\STM32F0xx\Include</state>
                     <state>$PROJ_DIR$\..\lib</state>
@@ -372,7 +373,7 @@
                 </option>
                 <option>
                     <name>CCOptLevel</name>
-                    <state>3</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCOptStrategy</name>
@@ -381,7 +382,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>3</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CompilerMisraRules98</name>
@@ -1465,6 +1466,15 @@
                         <name>dhcp</name>
                         <file>
                             <name>$PROJ_DIR$\..\..\..\..\Source\third_party\uip\apps\dhcpc\dhcpc.c</name>
+                        </file>
+                    </group>
+                    <group>
+                        <name>resolv</name>
+                        <file>
+                            <name>$PROJ_DIR$\..\..\..\..\Source\third_party\uip\apps\resolv\resolv.c</name>
+                        </file>
+                        <file>
+                            <name>$PROJ_DIR$\..\..\..\..\Source\third_party\uip\apps\resolv\resolv.h</name>
                         </file>
                     </group>
                 </group>

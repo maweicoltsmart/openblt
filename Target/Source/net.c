@@ -29,6 +29,7 @@
 /****************************************************************************************
 * Include files
 ****************************************************************************************/
+#include "stdio.h"
 #include "boot.h"                                /* bootloader generic header          */
 #if (BOOT_COM_NET_ENABLE > 0)
 #include "netdev.h"
@@ -37,6 +38,8 @@
 #endif
 
 
+#include "CH57x_common.h"
+#include <string.h>
 #if (BOOT_COM_NET_ENABLE > 0)
 /****************************************************************************************
 * Configuration macros
@@ -72,6 +75,8 @@ static void NetServerTask(void);
 /****************************************************************************************
 * Local data declarations
 ****************************************************************************************/
+static u8_t get_remote_host_ip_ok = 0;
+static char str_remote_host_ip[40] = {0};
 /** \brief Holds the time out value of the uIP periodic timer. */
 static blt_int32u periodicTimerTimeOut;
 /** \brief Holds the time out value of the uIP ARP timer. */
@@ -140,7 +145,7 @@ void NetInit(void)
     uip_setdraddr(ipaddr);
 #endif
     /* start listening on the configured port for XCP transfers on TCP/IP */
-    uip_listen(HTONS(BOOT_COM_NET_PORT));
+    //uip_listen(HTONS(BOOT_COM_NET_PORT));
     /* initialize the MAC and set the MAC address */
     netdev_init_mac();
 
@@ -151,6 +156,7 @@ void NetInit(void)
     dhcpc_request();
 #endif
 
+    resolv_init();
     /* extend the time that the backdoor is open in case the default timed backdoor
      * mechanism is used.
      */
@@ -164,7 +170,38 @@ void NetInit(void)
     netInitializedFlag = BLT_TRUE;
   }
 } /*** end of NetInit ***/
-
+#ifndef NULL
+#define NULL    0
+#endif
+void resolv_found(char *name, u16_t *ipaddr)            //DNS 找到对应服务器IP
+{
+    //u16_t ipaddr2;
+    printf("%s, %d\r\n", __func__, __LINE__);
+    if(ipaddr == NULL) {
+        get_remote_host_ip_ok = 0;
+        memset(str_remote_host_ip, 0, sizeof(str_remote_host_ip));
+        printf("Host %s not found\r\n", name);
+    } else {
+      
+        printf("Found name %s = %d.%d.%d.%d\r\n", name,
+           htons(ipaddr[0]) >> 8,
+           htons(ipaddr[0]) & 0xff,
+           htons(ipaddr[1]) >> 8,
+           htons(ipaddr[1]) & 0xff);
+        get_remote_host_ip_ok = 1;
+        sprintf(str_remote_host_ip, "%d.%d.%d.%d",
+           htons(ipaddr[0]) >> 8,
+           htons(ipaddr[0]) & 0xff,
+           htons(ipaddr[1]) >> 8,
+           htons(ipaddr[1]) & 0xff);
+          /*if(webclient_get(“www.ichanging.org”, 80, “/index.php”))
+          {
+              printf(“the connection was initiated”);
+          }else{
+              printf(“the host name could not be found in the cache  or TCP connection could not be created.”);
+          }*/
+    }
+}
 
 #if (BOOT_COM_NET_DEFERRED_INIT_ENABLE == 1)
 /************************************************************************************//**
@@ -244,7 +281,37 @@ blt_bool NetReceivePacket(blt_int8u *data, blt_int8u *len)
   return BLT_FALSE;
 } /*** end of NetReceivePacket ***/
 
+void uip_appcall(void)
+{
+  
+}
 
+void uip_udp_appcall(void)
+{
+  dhcpc_appcall();
+  resolv_appcall();
+#if 0
+  switch(uip_udp_conn->rport)	//Ô¶³ÌÁ¬½Ó60007¶Ë¿Ú
+  {
+    case HTONS(67):
+      dhcpc_appcall();
+      break;
+    case HTONS(53):
+      resolv_appcall();
+      break;
+    default: 
+      break;
+  }
+  switch(uip_udp_conn->lport)	//±¾µØÁ¬½Ó60006¶Ë¿Ú
+  {
+    case HTONS(68):
+      dhcpc_appcall();
+      break;
+    default: 
+      break;
+  }
+#endif
+}
 /************************************************************************************//**
 ** \brief     The uIP network application that implements XCP on TCP/IP. Note that this
 **            application make use of the fact that XCP is request/response based. So
@@ -253,8 +320,70 @@ blt_bool NetReceivePacket(blt_int8u *data, blt_int8u *len)
 ** \return    none.
 **
 ****************************************************************************************/
+typedef enum{
+  en_FirewareUpgradeStateWaitIP,
+  FirewareUpgradeStateGetIPOk,
+  FirewareUpgradeStateWaitDNS,
+  FirewareUpgradeStateGetVersionInfo,
+  FirewareUpgradeStateWaitVersionInfo,
+  FirewareUpgradeStateGetData,
+  FirewareUpgradeStateWaitData,
+  FirewareUpgradeStateFirewareDone,
+  FirewareUpgradeStateVerify
+}en_FirewareUpgradeState;
 void NetApp(void)
 {
+  //uip_ipaddr_t dnsipaddr;
+  static blt_int32u timeout;
+  static en_FirewareUpgradeState enFirewareUpgradeState = en_FirewareUpgradeStateWaitIP;
+  {
+    switch(enFirewareUpgradeState)
+    {
+      case en_FirewareUpgradeStateWaitIP:
+        if(if_have_ip())
+        {
+          enFirewareUpgradeState = FirewareUpgradeStateWaitDNS;
+          timeout = TimerGet();
+          uip_ipaddr_t dnsipaddr;
+          uip_ipaddr(dnsipaddr, 114,114,114,114); //DNS server ,Google DNS Server
+          resolv_conf(dnsipaddr);
+          resolv_query("www.qq.com");
+          enFirewareUpgradeState = FirewareUpgradeStateWaitDNS;
+          //printf("%s, %d\r\n", __func__, __LINE__);
+        }
+        break;
+      case FirewareUpgradeStateWaitDNS:
+        WWDG_SetCounter(1);
+        //printf("%s, %d\r\n", __func__, __LINE__);
+        if(get_remote_host_ip_ok == 1)
+        {
+          //printf("%s, %d\r\n", __func__, __LINE__);
+          enFirewareUpgradeState = FirewareUpgradeStateGetVersionInfo;
+          printf("host:www.qq.com, IP = %s\r\n", str_remote_host_ip);
+        }
+        else
+        {
+          /*if(TimerGetElapsedTime(timeout) > 5000)
+          {
+            enFirewareUpgradeState = en_FirewareUpgradeStateWaitIP;
+          }*/
+        }
+        break;
+      case FirewareUpgradeStateGetVersionInfo:
+        break;
+      case FirewareUpgradeStateWaitVersionInfo:
+        break;
+      case FirewareUpgradeStateGetData:
+        break;
+      case FirewareUpgradeStateWaitData:
+        break;
+      case FirewareUpgradeStateFirewareDone:
+        break;
+      case FirewareUpgradeStateVerify:
+        break;
+    }
+  }
+#if 0
   uip_tcp_appstate_t *s;
   blt_int8u *newDataPtr;
 
@@ -325,6 +454,7 @@ void NetApp(void)
       XcpPacketReceived(&newDataPtr[4], (blt_int8u)(uip_datalen() - 4));
     }
   }
+#endif
 } /*** end of NetApp ***/
 
 
@@ -338,6 +468,7 @@ static void NetServerTask(void)
   blt_int32u connection;
   blt_int32u packetLen;
 
+  NetApp();
   /* check for an RX packet and read it. */
   packetLen = netdev_read();
   if (packetLen > 0)
